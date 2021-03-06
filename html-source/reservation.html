@@ -10,6 +10,9 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.2/dist/css/datepicker-bs4.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.2/dist/css/datepicker.min.css">
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
   <style>
     .my-footer {
       height: 5em;
@@ -18,6 +21,11 @@
       padding: 1em;
       color: white;
       font-size: 80%;
+    }
+
+   
+    .notie-container {
+      box-shadow: none;
     }
   </style>
 </head>
@@ -69,31 +77,27 @@
             <div class="col-md-6">
                 <h1 class="text-center mt-4">Search for Availability</h1>
                 
-                <form action="/reservation.html" method= "">
+                <form action="reservation.html" method= "" novalidate class="needs-validation">
+                
                 <div class="row">
-                    <div class="col">
-                        <div class="form-group"> 
-                          <label for="StartDate" class="form-label">Start Date</label>
-                          <input required type="date" class="form-control" id="StartDate" >
-                          <div id="start-date" class="form-text">Enter the arriving date</div>
-                        </div>
-                    </div>
-
-                    <div class="col">
-                      <div class="form-group">
-                        <label for="endDate" class="form-label">End Date</label>
-                        <input required type="date" class="form-control" id="endDate">
-                        <div id="start-date" class="form-text">Enter the departing date</div>
+                  <div class="col">
+                      <div id="reservationDate" class="row">
+                          <div class="col">
+                              <input class = "form-control col-md-3" type="text" name="start" placeholder="Arriving" required autocomplete="off">
+                          </div>
+                          <div class="col">
+                              <input class = "form-control col-md-3"  type="text" name="end" placeholder="Departing" required autocomplete="off">
+                          </div>
                       </div>
-                    </div>
+                  </div>
                 </div>
           
-           
-          
-                <button type="submit" class="btn btn-primary mt-3 text-center">Check Availability</button>
+                <button type="submit" id="checkavail" class="btn btn-primary mt-3 text-center">Check Availability</button>
                 </form>
             </div>
      </div>
+     
+    
  </div>
 
   <footer class="my-footer">
@@ -119,8 +123,73 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"
     integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG"
     crossorigin="anonymous"></script>
+    
+  <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.2/dist/js/datepicker-full.min.js"></script>
+  <script src="https://unpkg.com/notie"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
 
+  let attention = prompt();
+  (function () {
+      'use strict'
 
+   // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    let forms = document.querySelectorAll('.needs-validation')
+
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+      .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+
+    const elem = document.getElementById('reservationDate');
+      const rangepicker = new DateRangePicker(elem, {
+        format: "yyyy-mm-dd",
+      });
+
+     document.getElementById('checkavail').addEventListener('click',function(){
+             
+       attention.toast();
+     })
+      function notify(msg, error){
+        notie.alert({
+          type: msg,
+          text: error,
+        
+        })
+      }
+
+      function notifyModal(title, text, icon,confirmbuttontext){
+        Swal.fire({
+          title: title,
+          html: text,
+          icon: icon,
+          confirmButtonText: confirmbuttontext
+        })
+      }
+
+      function prompt(){
+        let toast = function(){
+          console.log("clicked button and got toast")
+        }
+
+        let success = function(){
+          console.log("clicked button and got succes")
+        }
+        return {
+          toast:toast,
+          success: success
+        }
+      }
+</script>
 </body>
 
 </html>
